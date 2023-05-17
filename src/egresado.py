@@ -5,7 +5,7 @@ class Egresado:
         self.__promedio = promedio
 
     def __str__(self) -> str:
-        return self.__nombre + " | " + self.__profesion + " | " + str(int(self.__promedio))
+        return self.__nombre + " | " + self.__profesion + " | " + str(self.__promedio)
 
     @property
     def nombre(self):
@@ -24,7 +24,7 @@ class Egresado:
         self.__profesion = profesion
 
     @property
-    def promedio(self) -> int:
+    def promedio(self):
         return self.__promedio
 
     @promedio.setter

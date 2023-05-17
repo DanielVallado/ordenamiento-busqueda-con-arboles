@@ -189,70 +189,50 @@ class ArbolAVL:
             else:
                 self.__recalcular_fe(nodo.padre)
 
-    def __inserta_ordenado_por_nombre(self, nodo: NodoAVL, egresado: Egresado):
-        nombre = egresado.nombre
-
-        if not nodo.datos or nodo.datos[0].nombre == nombre:
+    def __inserta_ordenado(self, nodo: NodoAVL, egresado: Egresado, criterio):
+        if not nodo.datos or criterio(nodo.datos[0]) == criterio(egresado):
             nodo.datos.append(egresado)
-
-        elif nodo.datos[0].nombre > nombre:
+        elif criterio(nodo.datos[0]) > criterio(egresado):
             if nodo.izq is None:
                 nodo.izq = NodoAVL(egresado, None, None, nodo)
                 self.__recalcular_fe(nodo)
             else:
-                self.__inserta_ordenado_por_nombre(nodo.izq, egresado)
-
-        elif nodo.datos[0].nombre < nombre:
+                self.__inserta_ordenado(nodo.izq, egresado, criterio)
+        elif criterio(nodo.datos[0]) < criterio(egresado):
             if nodo.der is None:
                 nodo.der = NodoAVL(egresado, None, None, nodo)
                 self.__recalcular_fe(nodo)
             else:
-                self.__inserta_ordenado_por_nombre(nodo.der, egresado)
-
-    def __inserta_ordenado_por_profesion(self, nodo: NodoAVL, egresado: Egresado):
-        profesion = egresado.profesion
-
-        if not nodo.datos or nodo.datos[0].profesion == profesion:
-            nodo.datos.append(egresado)
-
-        elif nodo.datos[0].profesion > profesion:
-            if nodo.izq is None:
-                nodo.izq = NodoAVL(egresado, None, None, nodo)
-                self.__recalcular_fe(nodo)
-            else:
-                self.__inserta_ordenado_por_profesion(nodo.izq, egresado)
-
-        elif nodo.datos[0].profesion < profesion:
-            if nodo.der is None:
-                nodo.der = NodoAVL(egresado, None, None, nodo)
-                self.__recalcular_fe(nodo)
-            else:
-                self.__inserta_ordenado_por_profesion(nodo.der, egresado)
-
-    def __inserta_ordenado_por_promedio(self, nodo: NodoAVL, egresado: Egresado):
-        promedio = egresado.promedio
-
-        if not nodo.datos or nodo.datos[0].promedio == promedio:
-            nodo.datos.append(egresado)
-
-        elif nodo.datos[0].promedio > promedio:
-            if nodo.izq is None:
-                nodo.izq = NodoAVL(egresado, None, None, nodo)
-                self.__recalcular_fe(nodo)
-            else:
-                self.__inserta_ordenado_por_promedio(nodo.izq, egresado)
-
-        elif nodo.datos[0].promedio < promedio:
-            if nodo.der is None:
-                nodo.der = NodoAVL(egresado, None, None, nodo)
-                self.__recalcular_fe(nodo)
-            else:
-                self.__inserta_ordenado_por_promedio(nodo.der, egresado)
+                self.__inserta_ordenado(nodo.der, egresado, criterio)
 
     def insertar(self, egresado: Egresado, tipo_insercion):
         if tipo_insercion == 'nombre':
-            self.__inserta_ordenado_por_nombre(self.raiz, egresado)
-        if tipo_insercion == 'profesion':
-            self.__inserta_ordenado_por_profesion(self.raiz, egresado)
-        if tipo_insercion == 'promedio':
-            self.__inserta_ordenado_por_promedio(self.raiz, egresado)
+            self.__inserta_ordenado(self.raiz, egresado, lambda e: e.nombre)
+        elif tipo_insercion == 'profesion':
+            self.__inserta_ordenado(self.raiz, egresado, lambda e: e.profesion)
+        elif tipo_insercion == 'promedio':
+            self.__inserta_ordenado(self.raiz, egresado, lambda e: e.promedio)
+
+    def __buscar(self, valor, criterio):
+        nodo = self.raiz
+
+        while nodo is not None:
+            if criterio(nodo.datos[0]) == valor:
+                return nodo.datos
+            elif criterio(nodo.datos[0]) > valor:
+                nodo = nodo.izq
+            else:
+                nodo = nodo.der
+
+        return None
+
+    def buscar_nombre(self, nombre):
+        return self.__buscar(nombre, lambda e: e.nombre)
+
+    def buscar_profesion(self, profesion):
+        return self.__buscar(profesion, lambda e: e.profesion)
+
+    def buscar_promedio(self, promedio):
+        return self.__buscar(promedio, lambda e: e.promedio)
+
+
