@@ -3,7 +3,7 @@ from src.arbol_avl.nodo_avl import NodoAVL
 
 class ArbolAVL:
     def __init__(self, dato=None) -> None:
-        self.__raiz = NodoAVL(dato=dato)
+        self.__raiz = NodoAVL(datos=dato)
 
     @property
     def raiz(self):
@@ -165,20 +165,20 @@ class ArbolAVL:
                 pass
             elif fe_hijo_der == 1:
                 self.__rotacion_dd(nodo)
-                print("Aplicando rotación DD...")
+                # print("Aplicando rotación DD...")
             elif fe_hijo_der == -1:
                 self.__rotacion_di(nodo)
-                print("Aplicando rotación DI...")
+                # print("Aplicando rotación DI...")
         else:
             fe_hijo_izq = nodo.izq.f_eq
             if fe_hijo_izq == 0:
                 pass
             elif fe_hijo_izq == -1:
                 self.__rotacion_ii(nodo)
-                print("Aplicando rotación II...")
+                # print("Aplicando rotación II...")
             elif fe_hijo_izq == 1:
                 self.__rotacion_id(nodo)
-                print("Aplicando rotación ID...")
+                # print("Aplicando rotación ID...")
 
     def __recalcular_fe(self, nodo: NodoAVL):
         if nodo is not None:
@@ -189,22 +189,24 @@ class ArbolAVL:
                 self.__recalcular_fe(nodo.padre)
 
     def __inserta_ordenado(self, nodo: NodoAVL, dato):
-        n = nodo.dato
-        if isinstance(n, str) and dato == n:
-            # Realizar acciones cuando el dato es igual a n (strings)
-            pass
-        elif isinstance(n, int) and dato < n:
-            if nodo.izq is None:
-                nodo.izq = NodoAVL(dato, None, None, nodo)
-                self.__recalcular_fe(nodo)
+        if nodo.datos:
+            if nodo.datos[0] > dato:
+                if nodo.izq is None:
+                    nodo.izq = NodoAVL(dato, None, None, nodo)
+                    self.__recalcular_fe(nodo)
+                else:
+                    self.__inserta_ordenado(nodo.izq, dato)
+            elif nodo.datos[0] < dato:
+                if nodo.der is None:
+                    nodo.der = NodoAVL(dato, None, None, nodo)
+                    self.__recalcular_fe(nodo)
+                else:
+                    self.__inserta_ordenado(nodo.der, dato)
             else:
-                self.__inserta_ordenado(nodo.izq, dato)
+                # Valor duplicado, agrega el dato a la lista de datos
+                nodo.datos.append(dato)
         else:
-            if nodo.der is None:
-                nodo.der = NodoAVL(dato, None, None, nodo)
-                self.__recalcular_fe(nodo)
-            else:
-                self.__inserta_ordenado(nodo.der, dato)
+            nodo.datos.append(dato)
 
     def insertar(self, dato):
         self.__inserta_ordenado(self.raiz, dato)

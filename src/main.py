@@ -16,7 +16,6 @@ for fila in columnas.itertuples(index=False):
     _nombre, _profesion, _promedio = fila
     arbol_nombres.insertar(_nombre)
     arbol_profesion.insertar(_profesion)
-    arbol_promedio.insertar(_promedio)
-
+    arbol_promedio.insertar(int(_promedio))
 
 arbol_promedio.inorden()

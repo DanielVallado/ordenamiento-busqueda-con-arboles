@@ -1,18 +1,18 @@
 class NodoAVL:
-    def __init__(self, dato=None, izq: 'NodoAVL' = None, der: 'NodoAVL' = None, padre: 'NodoAVL' = None, f_eq: int = 0):
-        self.__dato = dato
+    def __init__(self, datos=None, izq: 'NodoAVL' = None, der: 'NodoAVL' = None, padre: 'NodoAVL' = None, f_eq: int = 0):
+        self.__datos = [datos] if datos is not None else []
         self.__izq = izq
         self.__der = der
         self.__padre = padre
         self.__f_eq = f_eq
 
     @property
-    def dato(self):
-        return self.__dato
+    def datos(self):
+        return self.__datos
 
-    @dato.setter
-    def dato(self, dato):
-        self.__dato = dato
+    @datos.setter
+    def datos(self, datos):
+        self.__datos = datos
 
     @property
     def izq(self):
@@ -54,26 +54,29 @@ class NodoAVL:
             return 1 + max(NodoAVL.altura(nodo.izq), NodoAVL.altura(nodo.der))
 
     def __str__(self):
-        return str(self.__dato)
+        return ', '.join(str(dato) for dato in self.__datos)
 
     # Recorridos del árbol
     def inorden(self):
-        if self.izq != None:
+        if self.izq is not None:
             self.izq.inorden()
-        print(self.dato, "| FE: ", self.f_eq)
-        if self.der != None:
+        for dato in self.__datos:
+            print(dato, "| FE:", self.f_eq)
+        if self.der is not None:
             self.der.inorden()
 
     def posorden(self):
-        if self.izq != None:
+        if self.izq is not None:
             self.izq.posorden()
-        if self.der != None:
+        if self.der is not None:
             self.der.posorden()
-        print(self.dato, "| FE: ", self.f_eq)
+        for dato in self.__datos:
+            print(dato, "| FE:", self.f_eq)
 
     def preorden(self):
-        print(self.dato, "| FE: ", self.f_eq)
-        if self.izq != None:
+        for dato in self.__datos:
+            print(dato, "| FE:", self.f_eq)
+        if self.izq is not None:
             self.izq.preorden()
-        if self.der != None:
+        if self.der is not None:
             self.der.preorden()
