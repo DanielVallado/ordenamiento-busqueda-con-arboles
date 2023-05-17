@@ -1,4 +1,5 @@
 from src.arbol_avl.nodo_avl import NodoAVL
+from src.egresado import Egresado
 
 
 class ArbolAVL:
@@ -188,25 +189,70 @@ class ArbolAVL:
             else:
                 self.__recalcular_fe(nodo.padre)
 
-    def __inserta_ordenado(self, nodo: NodoAVL, dato):
-        if nodo.datos:
-            if nodo.datos[0] > dato:
-                if nodo.izq is None:
-                    nodo.izq = NodoAVL(dato, None, None, nodo)
-                    self.__recalcular_fe(nodo)
-                else:
-                    self.__inserta_ordenado(nodo.izq, dato)
-            elif nodo.datos[0] < dato:
-                if nodo.der is None:
-                    nodo.der = NodoAVL(dato, None, None, nodo)
-                    self.__recalcular_fe(nodo)
-                else:
-                    self.__inserta_ordenado(nodo.der, dato)
-            else:
-                # Valor duplicado, agrega el dato a la lista de datos
-                nodo.datos.append(dato)
-        else:
-            nodo.datos.append(dato)
+    def __inserta_ordenado_por_nombre(self, nodo: NodoAVL, egresado: Egresado):
+        nombre = egresado.nombre
 
-    def insertar(self, dato):
-        self.__inserta_ordenado(self.raiz, dato)
+        if not nodo.datos or nodo.datos[0].nombre == nombre:
+            nodo.datos.append(egresado)
+
+        elif nodo.datos[0].nombre > nombre:
+            if nodo.izq is None:
+                nodo.izq = NodoAVL(egresado, None, None, nodo)
+                self.__recalcular_fe(nodo)
+            else:
+                self.__inserta_ordenado_por_nombre(nodo.izq, egresado)
+
+        elif nodo.datos[0].nombre < nombre:
+            if nodo.der is None:
+                nodo.der = NodoAVL(egresado, None, None, nodo)
+                self.__recalcular_fe(nodo)
+            else:
+                self.__inserta_ordenado_por_nombre(nodo.der, egresado)
+
+    def __inserta_ordenado_por_profesion(self, nodo: NodoAVL, egresado: Egresado):
+        profesion = egresado.profesion
+
+        if not nodo.datos or nodo.datos[0].profesion == profesion:
+            nodo.datos.append(egresado)
+
+        elif nodo.datos[0].profesion > profesion:
+            if nodo.izq is None:
+                nodo.izq = NodoAVL(egresado, None, None, nodo)
+                self.__recalcular_fe(nodo)
+            else:
+                self.__inserta_ordenado_por_profesion(nodo.izq, egresado)
+
+        elif nodo.datos[0].profesion < profesion:
+            if nodo.der is None:
+                nodo.der = NodoAVL(egresado, None, None, nodo)
+                self.__recalcular_fe(nodo)
+            else:
+                self.__inserta_ordenado_por_profesion(nodo.der, egresado)
+
+    def __inserta_ordenado_por_promedio(self, nodo: NodoAVL, egresado: Egresado):
+        promedio = egresado.promedio
+
+        if not nodo.datos or nodo.datos[0].promedio == promedio:
+            nodo.datos.append(egresado)
+
+        elif nodo.datos[0].promedio > promedio:
+            if nodo.izq is None:
+                nodo.izq = NodoAVL(egresado, None, None, nodo)
+                self.__recalcular_fe(nodo)
+            else:
+                self.__inserta_ordenado_por_promedio(nodo.izq, egresado)
+
+        elif nodo.datos[0].promedio < promedio:
+            if nodo.der is None:
+                nodo.der = NodoAVL(egresado, None, None, nodo)
+                self.__recalcular_fe(nodo)
+            else:
+                self.__inserta_ordenado_por_promedio(nodo.der, egresado)
+
+    def insertar(self, egresado: Egresado, tipo_insercion):
+        if tipo_insercion == 'nombre':
+            self.__inserta_ordenado_por_nombre(self.raiz, egresado)
+        if tipo_insercion == 'profesion':
+            self.__inserta_ordenado_por_profesion(self.raiz, egresado)
+        if tipo_insercion == 'promedio':
+            self.__inserta_ordenado_por_promedio(self.raiz, egresado)

@@ -1,5 +1,8 @@
+from src.egresado import Egresado
+
+
 class NodoAVL:
-    def __init__(self, datos=None, izq: 'NodoAVL' = None, der: 'NodoAVL' = None, padre: 'NodoAVL' = None, f_eq: int = 0):
+    def __init__(self, datos: Egresado = None, izq: 'NodoAVL' = None, der: 'NodoAVL' = None, padre: 'NodoAVL' = None, f_eq: int = 0):
         self.__datos = [datos] if datos is not None else []
         self.__izq = izq
         self.__der = der
