@@ -1,4 +1,4 @@
-from src.arbol_avl.ArbolAVL import ArbolAVL
+from src.ArbolAVL import ArbolAVL
 from src.egresado import Egresado
 from src.excel_reader import ExcelReader
 
@@ -23,4 +23,10 @@ for fila in columnas.itertuples(index=False):
     arbol_promedio.insertar(egresado, tipo_insercion='promedio')
 
 arbol_promedio.inorden()
-print(arbol_profesion.buscar_promedio("Contador Público")[0])
+print("-----------------")
+for nombre in arbol_promedio.buscar_profesion("Contador Público"):
+    print(nombre)
+
+print("-----------------")
+for combinado in arbol_profesion.buscar_profesion_promedio("Licenciado en Derecho", 88):
+    print(combinado)

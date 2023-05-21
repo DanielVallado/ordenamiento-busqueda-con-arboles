@@ -1,4 +1,4 @@
-from src.arbol_avl.nodo_avl import NodoAVL
+from src.nodo_avl import NodoAVL
 from src.egresado import Egresado
 
 
@@ -213,7 +213,7 @@ class ArbolAVL:
         elif tipo_insercion == 'promedio':
             self.__inserta_ordenado(self.raiz, egresado, lambda e: e.promedio)
 
-    def __buscar(self, valor, criterio):
+    def __buscar_arbol_ordenado(self, valor, criterio):
         nodo = self.raiz
 
         while nodo is not None:
@@ -226,13 +226,57 @@ class ArbolAVL:
 
         return None
 
+    def __buscar(self, nodo, valor, criterio, resultados):
+        if nodo is not None:
+            for egresado in nodo.datos:
+                if criterio(egresado) == valor:
+                    resultados.append(egresado)
+
+            resultado_izq = self.__buscar(nodo.izq, valor, criterio, resultados)
+            if resultado_izq is not None:
+                return resultado_izq
+
+            resultado_der = self.__buscar(nodo.der, valor, criterio, resultados)
+            if resultado_der is not None:
+                return resultado_der
+
+        return None
+
     def buscar_nombre(self, nombre):
-        return self.__buscar(nombre, lambda e: e.nombre)
+        resultados = []
+        self.__buscar(self.raiz, nombre, lambda e: e.nombre, resultados)
+        return resultados
 
     def buscar_profesion(self, profesion):
-        return self.__buscar(profesion, lambda e: e.profesion)
+        resultados = []
+        self.__buscar(self.raiz, profesion, lambda e: e.profesion, resultados)
+        return resultados
 
     def buscar_promedio(self, promedio):
-        return self.__buscar(promedio, lambda e: e.promedio)
+        resultados = []
+        self.__buscar(self.raiz, promedio, lambda e: e.promedio, resultados)
+        return resultados
 
+    def buscar_nombre_profesion(self, nombre, profesion):
+        resultado = []
+        lista_egresados = self.buscar_nombre(nombre)
+        for egresado in lista_egresados:
+            if egresado.nombre == nombre and egresado.profesion == profesion:
+                resultado.append(egresado)
+        return resultado
 
+    def buscar_nombre_promedio(self, nombre, promedio):
+        resultado = []
+        lista_egresados = self.buscar_nombre(nombre)
+        for egresado in lista_egresados:
+            if egresado.nombre == nombre and egresado.promedio == promedio:
+                resultado.append(egresado)
+        return resultado
+
+    def buscar_profesion_promedio(self, profesion, promedio):
+        resultado = []
+        lista_egresados = self.buscar_profesion(profesion)
+        for egresado in lista_egresados:
+            if egresado.profesion == profesion and egresado.promedio == promedio:
+                resultado.append(egresado)
+        return resultado
