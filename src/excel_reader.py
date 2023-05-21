@@ -3,13 +3,21 @@ import pandas as pd
 
 class ExcelReader:
     def __init__(self) -> None:
-        self.excel_file = None
+        self._path = None
 
-    def set_path(self, path):
-        self.excel_file = pd.ExcelFile(path)
+    def __read_excel(self):
+        return pd.ExcelFile(self._path)
 
-    def read_excel(self):
-        if self.excel_file is not None:
-            return self.excel_file.parse()
-        else:
-            raise ValueError("No se ha establecido la ruta del archivo Excel")
+    def get_data(self):
+        try:
+            return self.__read_excel().parse()
+        except FileNotFoundError:
+            raise ValueError("La ruta es incorrecta.")
+
+    @property
+    def path(self):
+        return self._path
+
+    @path.setter
+    def path(self, path):
+        self._path = path

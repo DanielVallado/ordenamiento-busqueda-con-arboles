@@ -1,17 +1,22 @@
-from src.ArbolAVL import ArbolAVL
+import os
+
+from src.arbol_avl import ArbolAVL
+from src.csv_writer import CSVWriter
 from src.egresado import Egresado
 from src.excel_reader import ExcelReader
 
 # Crear objetos
 reader = ExcelReader()
+writer = CSVWriter()
 arbol_nombres = ArbolAVL()
 arbol_profesion = ArbolAVL()
 arbol_promedio = ArbolAVL()
 
 # Leer datos
-reader.set_path(r'C:\Users\danie\OneDrive - Universidad Autonoma de Yucatan\LIS\LIS - Cuarto Semestre\Estructura '
-                r'de Datos\ordenamiento-busqueda-con-arboles\Egresados.xls')
-data = reader.read_excel()
+path = r'C:\Users\danie\OneDrive - Universidad Autonoma de Yucatan\LIS\LIS - ' \
+              r'Cuarto Semestre\Estructura de Datos\ordenamiento-busqueda-con-arboles\Egresados.xls'
+reader.path = path
+data = reader.get_data()
 columnas = data.iloc[:, :3]  # Obtener las primeras tres columnas del DataFrame
 
 # Guardar valores
@@ -23,6 +28,7 @@ for fila in columnas.itertuples(index=False):
     arbol_promedio.insertar(egresado, tipo_insercion='promedio')
 
 arbol_promedio.inorden()
+
 print("-----------------")
 for nombre in arbol_promedio.buscar_profesion("Contador Público"):
     print(nombre)
@@ -30,3 +36,6 @@ for nombre in arbol_promedio.buscar_profesion("Contador Público"):
 print("-----------------")
 for combinado in arbol_profesion.buscar_profesion_promedio("Licenciado en Derecho", 88):
     print(combinado)
+
+writer.path = os.path.dirname(path)
+writer.excel_to_csv(data, "egresados_en_csv")
