@@ -1,5 +1,5 @@
 import os
-
+from src.Manager import Manager
 from src.arbol_avl import ArbolAVL
 from src.csv_writer import CSVWriter
 from src.egresado import Egresado
@@ -37,5 +37,9 @@ print("-----------------")
 for combinado in arbol_profesion.buscar_profesion_promedio("Licenciado en Derecho", 88):
     print(combinado)
 
-writer.path = os.path.dirname(path)
-writer.excel_to_csv(data, "egresados_en_csv")
+# Creación interfaz
+vista = Manager()
+vista.geometry("800x600")
+vista.mainloop()
+# writer.path = os.path.dirname(path)
+# writer.excel_to_csv(data, "egresados_en_csv")
