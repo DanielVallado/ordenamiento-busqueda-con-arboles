@@ -95,7 +95,7 @@ class Home(tk.Frame):
         self.spinbox = tk.Spinbox(
             self,
             values=(
-                "Nombre", "Profesion", "Promedio", "Nombre y profesion", "Nombre y promedio", "Profesion y promedio"),
+                "Nombre", "Profesión", "Promedio", "Nombre y profesión", "Nombre y promedio", "Profesión y promedio"),
             justify=tk.CENTER,
             **style.SPINBOX,
         )
@@ -215,19 +215,21 @@ class Home(tk.Frame):
         resultado = []
         parametro = "AND"
         try:
-            if tipo == 'Nombre':
+            if busqueda == '':
+                self.cargar_datos(self.arbol_nombres.get_valores())
+            elif tipo == 'Nombre':
                 resultado = self.arbol_nombres.buscar_nombre(busqueda)
-            elif tipo == 'Profesion':
+            elif tipo == 'Profesión':
                 resultado = self.arbol_profesion.buscar_profesion(busqueda)
             elif tipo == 'Promedio':
                 resultado = self.arbol_promedio.buscar_promedio(int(busqueda))
-            elif tipo == 'Nombre y profesion':
+            elif tipo == 'Nombre y profesión':
                 partes = self.__dividir_string(busqueda, parametro)
                 resultado = self.arbol_nombres.buscar_nombre_profesion(partes[0], partes[1])
             elif tipo == 'Nombre y promedio':
                 partes = self.__dividir_string(busqueda, parametro)
                 resultado = self.arbol_nombres.buscar_nombre_promedio(partes[0], int(partes[1]))
-            elif tipo == 'Profesion y promedio':
+            elif tipo == 'Profesión y promedio':
                 partes = self.__dividir_string(busqueda, parametro)
                 resultado = self.arbol_profesion.buscar_profesion_promedio(partes[0], int(partes[1]))
             else:
@@ -245,7 +247,6 @@ class Home(tk.Frame):
             self.add_element(egresado)
 
     def exportar_csv(self):
-
         self.writer.path = os.path.dirname(self.path)
         self.writer.excel_to_csv(self.data, "egresados")
         messagebox.showinfo("Éxito", "¡La exportación se realizó exitosamente!")

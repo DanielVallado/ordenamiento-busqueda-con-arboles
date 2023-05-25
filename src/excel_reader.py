@@ -5,14 +5,12 @@ class ExcelReader:
     def __init__(self) -> None:
         self._path = None
 
-    def __read_excel(self):
-        return pd.ExcelFile(self._path)
-
     def get_data(self):
         try:
-            data = self.__read_excel().parse()
-            numeric_columns = data.select_dtypes(include=[float]).columns
-            data[numeric_columns] = data[numeric_columns].astype(int)
+            file = pd.ExcelFile(self._path)
+            data = file.parse()
+            data['Promedio'] = data['Promedio'].astype(int)
+            print(data)
             return data
         except FileNotFoundError:
             raise ValueError("La ruta es incorrecta.")
