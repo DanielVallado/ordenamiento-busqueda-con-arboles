@@ -207,8 +207,8 @@ class Home(tk.Frame):
     def __dividir_string(self, busqueda, parametro):
         resultado = []
         partes = busqueda.split(parametro)
-        resultado[0] = partes[0].strip()
-        resultado[1] = partes[1].strip()
+        resultado.append(partes[0].strip())
+        resultado.append(partes[1].strip())
         return resultado
 
     def buscar_datos(self, busqueda, tipo):
@@ -223,10 +223,10 @@ class Home(tk.Frame):
                 resultado = self.arbol_promedio.buscar_promedio(int(busqueda))
             elif tipo == 'Nombre y profesion':
                 partes = self.__dividir_string(busqueda, parametro)
-                resultado = self.arbol_nombres.buscar_nombre_profesion(partes[0], int(partes[1]))
+                resultado = self.arbol_nombres.buscar_nombre_profesion(partes[0], partes[1])
             elif tipo == 'Nombre y promedio':
                 partes = self.__dividir_string(busqueda, parametro)
-                resultado = self.arbol_nombres.buscar_nombre_promedio(partes[0], partes[1])
+                resultado = self.arbol_nombres.buscar_nombre_promedio(partes[0], int(partes[1]))
             elif tipo == 'Profesion y promedio':
                 partes = self.__dividir_string(busqueda, parametro)
                 resultado = self.arbol_profesion.buscar_profesion_promedio(partes[0], int(partes[1]))
@@ -240,7 +240,6 @@ class Home(tk.Frame):
         self.cargar_datos(resultado)
 
     def cargar_datos(self, datos):
-        print(self.data.to_string())
         # Agregar los datos a la tabla
         for egresado in datos:
             self.add_element(egresado)
