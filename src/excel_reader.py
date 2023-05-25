@@ -10,7 +10,10 @@ class ExcelReader:
 
     def get_data(self):
         try:
-            return self.__read_excel().parse()
+            data = self.__read_excel().parse()
+            numeric_columns = data.select_dtypes(include=[float]).columns
+            data[numeric_columns] = data[numeric_columns].astype(int)
+            return data
         except FileNotFoundError:
             raise ValueError("La ruta es incorrecta.")
 

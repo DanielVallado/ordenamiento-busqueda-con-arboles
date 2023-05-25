@@ -280,3 +280,15 @@ class ArbolAVL:
             if egresado.profesion == profesion and egresado.promedio == promedio:
                 resultado.append(egresado)
         return resultado
+
+    def get_valores(self):
+        nodos = []
+        self.__obtener_nodos_inorden_recursivo(self.raiz, nodos)
+        return nodos
+
+    def __obtener_nodos_inorden_recursivo(self, nodo, nodos):
+        if nodo is not None:
+            self.__obtener_nodos_inorden_recursivo(nodo.izq, nodos)
+            nodos.extend(nodo.datos)
+            self.__obtener_nodos_inorden_recursivo(nodo.der, nodos)
+
